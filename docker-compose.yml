@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: civil-game-backend
+    ports:
+      - "8081:8080"
+    environment:
+      - ENV=production
+    networks:
+      - civil-game-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: civil-game-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - civil-game-network
+    restart: unless-stopped
+
+networks:
+  civil-game-network:
+    driver: bridge
+
